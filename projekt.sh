@@ -1,7 +1,7 @@
 #!/bin/bash
 urlencode() {
-  local input="$1 $2"
-  local out=$(jq -n --arg input "$input" '$input|@uri')E
+  local input="$*"
+  local out=$(jq -n --arg input "$input" '$input|@uri')
 
   echo "$out"
 }
@@ -15,25 +15,30 @@ help(){
 }
 czy_debug=false
 
-if [[ "$#" -gt 0 ]]; then
+while [[ "$#" -gt 0 ]]; do
     case $1 in
-        --city)	MI="$2 $3";;
-	--debug|--verbose) 
-		if [[ "$2" == "--city" ]]; then
-			MI="$3 $4"
-			czy_debug=true
-		else
-			echo "Nie podano --city"
-			exit 1
-		fi;;
-        --help|-h) help; exit 1;;
-        *) echo "Niewłaściwy parametr: $1"; exit 1;;
+        --city)
+            shift 
+            MI=""
+            while [[ "$#" -gt 0 && "$1" != --* ]]; do
+                MI="$MI $1"
+                shift
+            done
+            ;;
+        --debug|--verbose)
+            czy_debug=true
+            shift 
+            ;;
+        --help|-h)
+            help
+            exit 1
+            ;;
+        *)
+            echo "Niewłaściwy parametr: $1"
+            exit 1
+            ;;
     esac
-else
-    echo "Nie podano żadnych argumentów."
-    exit 1
-fi
-
+done
 if [ "$czy_debug" = true ]; then
     echo "Debugowanie:"
     echo "Szukane miasto: $MI"
