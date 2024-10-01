@@ -12,7 +12,7 @@ function help {
     Write-Host "Skrypt służy do wyświetlania informacji z najbliższej stacji meteorologicznej podanego miasta, przyjmuje argumenty:" | ForEach-Object { [System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::Default.GetBytes($_)) }
     Write-Host "--city [nazwa_miasta] : Miasto dla którego chcemy sprawdzić informacje"
     Write-Host "--help, -h : Pomoc"
-    Write-Host "--debug : Tryb debugowania"
+    Write-Host "--debug, --verbose : Tryb debugowania"
     Write-Host "W przypadku problemów spróbować usunąć pliki cache"
 }
 

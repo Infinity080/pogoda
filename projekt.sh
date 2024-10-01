@@ -10,7 +10,7 @@ help(){
   echo "Skrypt służy do wyświetlania informacji z najbliższej stacji meteorologicznej podanego miasta, przyjmuje argumenty:"
   echo "--city [nazwa_miasta] : Miasto dla którego chcemy sprawdzić informacje"
   echo "--help, -h : Pomoc"
-  echo "--debug : Tryb debugowania"
+  echo "--debug, --verbose : Tryb debugowania"
   echo "W przypadku problemów spróbować usunąć pliki cache" 
 }
 czy_debug=false
