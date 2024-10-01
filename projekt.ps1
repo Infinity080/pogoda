@@ -1,11 +1,8 @@
 
 
 function urlencode {
-    param (
-        [string]$arg1,
-        [string]$arg2
-    )
-    $in = "$arg1 $arg2".TrimEnd()
+    $param = $args
+    $in = ($args -join ' ').TrimEnd()
     $out = [uri]::EscapeDataString($in)
     Write-Output $out
 }
@@ -21,35 +18,34 @@ function help {
 
 
 $czy_debug = $false
-if ($args.Length -gt 0) {
+$MI = ""
+
+while ($args.Length -gt 0) {
     switch ($args[0]) {
-        "--city" { 
-            $MI = "$($args[1]) $($args[2])" 
-        }
-        {($_ -eq "--debug") -or ($_ -eq "--verbose")} {
-            if ($args[1] -eq "--city") {
-                $MI = "$($args[2]) $($args[3])"
-                $czy_debug = $true
-            }
-            else {
-                Write-Host "Nie podano --city"
-                exit 1
+        "--city" {
+            $args = $args[1..$args.Length]
+            $MI = ""
+            
+            while ($args.Length -gt 0 -and $args[0] -notmatch '^--') {
+                $MI += "$($args[0]) " 
+                $args = $args[1..$args.Length]  
             }
         }
-        {($_ -eq "--h") -or ($_ -eq "--help")} { 
-            help
-            exit 1 
+        {$_ -eq "--debug" -or $_ -eq "--verbose"} {
+            $czy_debug = $true
+            $args = $args[1..$args.Length]
         }
-        default { 
-            Write-Host "Niewlasciwy parametr: $($args[0])"
-            exit 1 
+        {$_ -eq "--help" -or $_ -eq "-h"} {
+            help  
+            exit 1
+        }
+        default {
+            Write-Host "Niewłaściwy parametr: $($args[0])"
+            exit 1
         }
     }
 }
-else {
-    Write-Host "Nie podano żadnych argumentów."
-    exit 1
-}
+
 
 
 
